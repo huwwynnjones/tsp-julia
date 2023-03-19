@@ -2,15 +2,15 @@ module Permutations
 
 export Permutation
 
-struct Permutation{A<:AbstractVector}
-    a::A
+struct Permutation{T}
+    a::Vector{T}
     n::Int
-    p::AbstractVector{Int}
+    p::Vector{Int}
     i::Int
 end
 
-function Permutation(a::Vector)
-    a = copy(a)
+function Permutation(A::Vector)
+    a = copy(A)
     n = length(a)
     p = collect(0:n)
     i = 1
@@ -18,14 +18,14 @@ function Permutation(a::Vector)
 end
 
 function Base.iterate(self::Permutation)
-    copy(self.a), self
+    copy(self.a), (self.a, self.n, self.p, self.i)
 end
 
-function Base.iterate(self::Permutation, state::Permutation)
-    a = copy(state.a)
-    n = state.n
-    p = copy(state.p)
-    i = state.i
+function Base.iterate(self::Permutation, state)
+    a = state[1]
+    n = state[2]
+    p = state[3]
+    i = state[4]
     if i < n
         p[i+1] -= 1
         j = isodd(i) ? p[i+1] : 0
@@ -35,7 +35,7 @@ function Base.iterate(self::Permutation, state::Permutation)
             p[i+1] = i
             i += 1
         end
-        a, Permutation(a, n, p, i)
+        copy(a), (a, n, p, i)
     else
         nothing
     end

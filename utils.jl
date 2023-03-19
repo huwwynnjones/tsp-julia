@@ -1,12 +1,14 @@
 module Utils
 
+using InternedStrings
+
 export loadcostsfromfile, citiesfromcitykeys, journeytocitypairs, calculatecost, CityKey
 isequal, hash
 
-
 struct CityKey
-    startcity
-    endcity
+    startcity::AbstractString
+    endcity::AbstractString
+    CityKey(startcity, endcity) = new(intern(startcity), intern(endcity))
 end
 
 Base.isequal(a::CityKey, b::CityKey) = a.startcity == b.startcity && a.endcity == b.endcity
