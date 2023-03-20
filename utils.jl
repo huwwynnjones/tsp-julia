@@ -8,7 +8,7 @@ isequal, hash
 struct CityKey
     startcity::AbstractString
     endcity::AbstractString
-    CityKey(startcity, endcity) = new(intern(startcity), intern(endcity))
+    CityKey(startcity, endcity) = new(startcity, endcity)
 end
 
 Base.isequal(a::CityKey, b::CityKey) = a.startcity == b.startcity && a.endcity == b.endcity
@@ -20,8 +20,11 @@ citykeyfrom(citypair) = CityKey(citypair[1], citypair[2])
 reversekey(citykey::CityKey) = CityKey(citykey.endcity, citykey.startcity)
 
 function stringtodictentry(input)
-    startcity, endcity, distance = split(input)
-    (CityKey(startcity, endcity), parse(Int, distance))
+    splited = split(input)
+    startcity = intern(splited[1])
+    endcity = intern(splited[2])
+    distance = parse(Int, splited[3])
+    (CityKey(startcity, endcity), distance)
 end
 
 function loadcostsfromfile(filename)

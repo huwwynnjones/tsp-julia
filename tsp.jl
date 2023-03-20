@@ -14,7 +14,7 @@ function main()
 
     for journey in permutations
         citypairs = journeytocitypairs(journey)
-        currentcost = calculatecost(citypairs, costs)
+        currentcost = Utils.calculatecost(citypairs, costs)
         if currentcost < lowestcost
             cheapestjourneys = []
             push!(cheapestjourneys, journey)
@@ -27,4 +27,4 @@ function main()
     println("Lowest cost $lowestcost, journeys $cheapestjourneys")
 end
 
-#main()
+main()
